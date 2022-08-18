@@ -20,4 +20,4 @@ def RomanToDecimal(romanNumeral):
     sum += tallies[romanNumeral[-1]]
     return sum
 
-print(RomanToDecimal(('I','I','I','I','I')))
+print(RomanToDecimal(('M','I','I','I','I','I')))
