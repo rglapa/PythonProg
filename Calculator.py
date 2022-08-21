@@ -15,6 +15,7 @@ class MyApp(App):
         button_grid= GridLayout(cols=4, size_hint_y=2)
         for symbol in button_symbols:
             button_grid.add_widget(Button(text=symbol))
+        print("self type: " + str(type(self)))
         
         clear_button = Button(text= 'Clear', size_hint_y=None, height=100)
         def print_button_text(instance):
