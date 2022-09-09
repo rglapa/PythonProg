@@ -36,7 +36,7 @@ llist.push(20)
 llist.push(4)
 llist.push(15)
 llist.push(85)
-
+llist.push(100)
 print("Given linked list:")
 llist.printList()
 print("Reversed Linked List:")
