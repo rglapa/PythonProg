@@ -15,9 +15,7 @@ while number <= 100:
     temp = number
     squr = math.pow(number, 2)
     sum = neonNumber(squr)
-
-    if sum == number:
-        lstofnums.append(number)
-        print(number)
-    number += 1
-    print(number)
+    if sum == temp:
+        lstofnums.append(temp)
+        print(temp)
+    number = number + 1
