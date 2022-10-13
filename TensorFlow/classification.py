@@ -11,12 +11,12 @@ train_images.shape
 
 train_images = train_images / 255.0
 test_images = test_images / 255.0
-
 class TensorFlow:
     def __init__(self) -> None:
         self.model = None
         self.probability_model = None
         self.predictions = None
+        self.epocs = 10
     def plot():
         plt.figure(figsize=(10,10))
         for i in range(25):
@@ -37,13 +37,12 @@ class TensorFlow:
         self.model.compile(optimizer='adam',
                            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                            metrics=['accuracy'])
-        self.model.fit(train_images,train_labels,epochs=30)
+        self.model.fit(train_images,train_labels,epochs=self.epocs)
         test_loss, test_acc = self.model.evaluate(test_images, test_labels,verbose=2)
         print('\nTest accuracy:',test_acc)
     def predictionModels(self):
         self.probability_model = tf.keras.Sequential([self.model, tf.keras.layers.Softmax()])
         self.predictions = self.probability_model.predict(test_images)
-    
     def plot_image(i, predictions_array, true_label, img):
         true_label, img = true_label[i], img[i]
         plt.grid(False)
@@ -67,7 +66,7 @@ class TensorFlow:
         thisplot = plt.bar(range(10), predictions_array, color="#777777")
         plt.ylim([0,1])
         predicted_label = np.argmax(predictions_array)
-        thisplot[predicted_label].set_color('red')
+        thisplot[predicted_label].set_color('orange')
         thisplot[true_label].set_color('blue')
     def showImage(self):
         i = 2
@@ -78,10 +77,11 @@ class TensorFlow:
         TensorFlow.plot_value_array(i, self.predictions[i], test_labels)
         plt.show()
     def useModel(self):
-        img = test_images[15]
+        img = test_images[200]
         img = (np.expand_dims(img,0))
         predictions_single = self.probability_model.predict(img)
-        TensorFlow.plot_value_array(1, predictions_single[0], test_labels)
+        TensorFlow.plot_value_array(200, predictions_single[0], test_labels)
+        #TensorFlow.plot_image(2, predictions_single[0],test_labels,img)
         _ = plt.xticks(range(10), class_names, rotation=45)
         plt.show()
 
