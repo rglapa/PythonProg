@@ -1,3 +1,4 @@
+import os
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,8 +10,8 @@ class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
 (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 train_images.shape
 
-train_images = train_images / 255.0
-test_images = test_images / 255.0
+#train_images = train_images / 255.0
+#test_images = test_images / 255.0
 class TensorFlow:
     def __init__(self) -> None:
         self.model = None
@@ -37,9 +38,16 @@ class TensorFlow:
         self.model.compile(optimizer='adam',
                            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                            metrics=['accuracy'])
-        self.model.fit(train_images,train_labels,epochs=self.epocs)
+        
+        checkpoint_path = "training_1/cp.ckpt"
+        checkpoint_dir = os.path.dirname(checkpoint_path)
+        cp_callback =tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                                                        save_weights_only=True,
+                                                        verbose=1)
+        self.model.fit(train_images,train_labels,validation_data=(test_images, test_labels),epochs=self.epocs,
+                       callbacks=[cp_callback])
+        self.model.load_weights(checkpoint_path)
         test_loss, test_acc = self.model.evaluate(test_images, test_labels,verbose=2)
-        print('\nTest accuracy:',test_acc)
     def predictionModels(self):
         self.probability_model = tf.keras.Sequential([self.model, tf.keras.layers.Softmax()])
         self.predictions = self.probability_model.predict(test_images)
@@ -77,16 +85,24 @@ class TensorFlow:
         TensorFlow.plot_value_array(i, self.predictions[i], test_labels)
         plt.show()
     def useModel(self):
-        img = test_images[200]
+        img = test_images[180]
         img = (np.expand_dims(img,0))
         predictions_single = self.probability_model.predict(img)
-        TensorFlow.plot_value_array(200, predictions_single[0], test_labels)
+        TensorFlow.plot_value_array(180, predictions_single[0], test_labels)
         #TensorFlow.plot_image(2, predictions_single[0],test_labels,img)
         _ = plt.xticks(range(10), class_names, rotation=45)
         plt.show()
+        print(type(predictions_single))
 
-newTense = TensorFlow()
-newTense.setupLayers()
-newTense.compandTrain()
-newTense.predictionModels()
-newTense.useModel()
+class Main:
+    def __init__(self) -> None:
+        self.newTense = None
+    
+    def runModel(self):
+        self.newTense = TensorFlow()
+        self.newTense.setupLayers()
+        self.newTense.compandTrain()
+        self.newTense.predictionModels()
+        self.newTense.useModel()
+test = Main()
+test.runModel()
