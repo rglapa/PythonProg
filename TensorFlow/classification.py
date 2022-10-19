@@ -47,6 +47,7 @@ class TensorFlow:
         self.model.fit(train_images,train_labels,validation_data=(test_images, test_labels),epochs=self.epocs,
                        callbacks=[cp_callback])
         self.model.load_weights(checkpoint_path)
+        self.model.save('saved_model/my_model')
         test_loss, test_acc = self.model.evaluate(test_images, test_labels,verbose=2)
     def predictionModels(self):
         self.probability_model = tf.keras.Sequential([self.model, tf.keras.layers.Softmax()])
@@ -74,7 +75,7 @@ class TensorFlow:
         thisplot = plt.bar(range(10), predictions_array, color="#777777")
         plt.ylim([0,1])
         predicted_label = np.argmax(predictions_array)
-        thisplot[predicted_label].set_color('orange')
+        thisplot[predicted_label].set_color('red')
         thisplot[true_label].set_color('blue')
     def showImage(self):
         i = 2
