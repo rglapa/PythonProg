@@ -39,7 +39,7 @@ class TensorFlow:
                            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                            metrics=['accuracy'])
         
-        checkpoint_path = "training_1/cp.ckpt"
+        checkpoint_path = "TensorFlow/training_1/cp.ckpt"
         checkpoint_dir = os.path.dirname(checkpoint_path)
         cp_callback =tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
                                                         save_weights_only=True,
@@ -47,7 +47,7 @@ class TensorFlow:
         self.model.fit(train_images,train_labels,validation_data=(test_images, test_labels),epochs=self.epocs,
                        callbacks=[cp_callback])
         self.model.load_weights(checkpoint_path)
-        self.model.save('saved_model/my_model')
+        self.model.save('TensorFlow/saved_model/my_model')
         test_loss, test_acc = self.model.evaluate(test_images, test_labels,verbose=2)
     def predictionModels(self):
         self.probability_model = tf.keras.Sequential([self.model, tf.keras.layers.Softmax()])
@@ -86,10 +86,10 @@ class TensorFlow:
         TensorFlow.plot_value_array(i, self.predictions[i], test_labels)
         plt.show()
     def useModel(self):
-        img = test_images[180]
+        img = test_images[600]
         img = (np.expand_dims(img,0))
         predictions_single = self.probability_model.predict(img)
-        TensorFlow.plot_value_array(180, predictions_single[0], test_labels)
+        TensorFlow.plot_value_array(600, predictions_single[0], test_labels)
         #TensorFlow.plot_image(2, predictions_single[0],test_labels,img)
         _ = plt.xticks(range(10), class_names, rotation=45)
         plt.show()
