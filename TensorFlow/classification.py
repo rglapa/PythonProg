@@ -17,7 +17,7 @@ class TensorFlow:
         self.model = None
         self.probability_model = None
         self.predictions = None
-        self.epocs = 10
+        self.epocs = 100
     def plot():
         plt.figure(figsize=(10,10))
         for i in range(25):

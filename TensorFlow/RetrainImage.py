@@ -177,16 +177,30 @@ hist = model.fit(
   validation_data=val_ds,
   validation_steps=validation_steps).history
 
-plt.figure()
-plt.ylabel("Loss (training and validation)")
-plt.xlabel("Training Steps")
-plt.ylim([0,2])
-plt.plot(hist["loss"])
-plt.plot(hist["val_loss"])
+#plt.figure()
+#plt.ylabel("Loss (training and validation)")
+#plt.xlabel("Training Steps")
+#plt.ylim([0,2])
+#plt.plot(hist["loss"])
+#plt.plot(hist["val_loss"])
+#plt.show()
 
-plt.figure()
-plt.ylabel("Accuracy (training and validation")
-plt.xlabel("Training Steps")
-plt.ylim([0,1])
-plt.plot(hist["accuracy"])
-plt.plot(hist["val_accuracy"])
+#plt.figure()
+#plt.ylabel("Accuracy (training and validation")
+#plt.xlabel("Training Steps")
+#plt.ylim([0,1])
+#plt.plot(hist["accuracy"])
+#plt.plot(hist["val_accuracy"])
+#plt.show()
+
+x, y = next(iter(val_ds))
+image = x[0, :, :, :]
+true_index = np.argmax(y[0])
+plt.imshow(image)
+plt.axis('off')
+plt.show()
+
+prediction_scores = model.predict(np.expand_dims(image, axis=0))
+predicted_index = np.argmax(prediction_scores)
+print("True label: " + class_names[true_index])
+print("Predicted label: " + class_names[predicted_index])

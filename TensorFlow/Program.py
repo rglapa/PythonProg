@@ -11,4 +11,4 @@ class Main:
         self.newTense.predictionModels()
         self.newTense.useModel()
 test = Main()
-test.runModel()
+#test.runModel()
